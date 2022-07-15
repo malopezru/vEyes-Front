@@ -1,0 +1,20 @@
+th {
+  font-size:x-large;
+  border: 1px solid white !important;
+}
+  
+.table {
+  text-align: center;
+  min-width: 88vw;
+}
+
+.view {
+  height: 77vh;
+  overflow: auto;
+  margin-left: 7vw;
+}
+
+td {
+  border: 1px solid white !important;
+}
+  

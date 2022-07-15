@@ -1,0 +1,20 @@
+[
+    {
+     "first_name": "Mateo",
+     "last_name": "Lopez",
+     "username": "malopez",
+     "projects": ["Proyecto1, Proyecto2, Proyecto3"]
+    },
+    {
+     "first_name": "Michael",
+     "last_name": "Palacio",
+     "username": "mipalac",
+     "projects": ["Proyecto1, Proyecto2"]
+    },
+    {
+     "first_name": "Sebastián",
+     "last_name": "Delgado",
+     "username": "sedelgado",
+     "projects": ["Proyecto1, Proyecto3"]
+    }
+]

@@ -1,0 +1,23 @@
+.App-header {
+    min-height: 10vh;
+    display: flex;
+    flex-direction: row;
+    margin-left: 70vw;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  button {
+    border-color: white;
+    width: 80px;
+    height: 6vh;
+    margin: 10px;
+    background-color: gray;
+    border-radius: 10px;
+    font-size: 1.8vh;
+    font-weight: bold;
+  }
+  
+  button:hover {
+    background-color: #4ca7c1;
+  }
