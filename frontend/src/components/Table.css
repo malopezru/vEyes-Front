@@ -1,20 +1,24 @@
 th {
   font-size:x-large;
-  border: 1px solid white !important;
+  background-color: #1D83C2;
+  color: white;
 }
   
 .table {
   text-align: center;
-  min-width: 88vw;
+  width: 100%;
 }
 
 .view {
   height: 77vh;
   overflow: auto;
-  margin-left: 7vw;
 }
 
 td {
-  border: 1px solid white !important;
+  border-bottom: 1px solid #D6D6D6 !important;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
 }
   

@@ -5,7 +5,7 @@ import OptionsHeader from './components/OptionsHeader';
 import NewUser from './components/NewUser';
 import NewProject from './components/NewProject';
 import DeleteProject from './components/DeleteProject';
-import DataFetching from './components/DataFetching';
+import ModifyUser from './components/ModifyUser';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -14,6 +14,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<>
+            
             <Header/>
             <Table/></>}/>
 
@@ -31,7 +32,7 @@ function App() {
             
           <Route path="/modify-user" element={<>
             <OptionsHeader/>
-            {/* <DataFetching/> */}</>}/>
+            {<ModifyUser/>}</>}/>
 
         </Routes>
       </Router>

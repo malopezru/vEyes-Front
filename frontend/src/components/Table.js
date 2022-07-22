@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react'
-import { useTable } from 'react-table'
+import { useTable, useSortBy, useGlobalFilter } from 'react-table'
 import { Columns } from './Columns.js'
+import GlobalFilter from './GlobalFilter.js'
 import './Table.css'
 
 function Table() {
@@ -22,63 +23,58 @@ function Table() {
     }, [])
 
     const columns = useMemo(() => Columns, [])
-    const data = useMemo(() => userData, [])
 
     const tableInstance = useTable({
         columns: columns,
         data: userData
-    })
+    },
+    useGlobalFilter,
+    useSortBy)
 
     const { 
         getTableProps, 
         getTableBodyProps, 
         headerGroups, 
         rows,
-        prepareRow
+        prepareRow,
+        state,
+        setGlobalFilter,
     } = tableInstance 
 
-
-
+    const { globalFilter } = state
 
     return (
         <div className='view'>
-            <table  className='table' {...getTableProps()}>
-                <thead>
-                    {headerGroups.map((headerGroup) => (
-                            <tr {...headerGroup.getHeaderGroupProps()}>
-                                {headerGroup.headers.map((column) => (
-                                        <th {...column.getHeaderProps()}>{column.render('Header')}</th>
-                                    ))}
-                            </tr>
-                        ))}
-                </thead>
-        <tbody className='table__body' {...getTableBodyProps()}>
-          {rows.map(row => {
-            prepareRow(row)
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map(cell => {
-                  return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                })}
-              </tr>
-            )
-          })}
-        </tbody>
-            </table>
-            {/* <table className='table'>
-                <thead>
-                <tr className="table__header">
-                    <th className='header__1'>Usuario</th>
-                    <th className='header__2'>Proyectos</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td className='header__1'>1</td>
-                        <td className='column__2'>2</td>
-                    </tr>
-                </tbody>
-            </table> */}
+            <>
+            <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter}/>
+                <table  className='table' {...getTableProps()}>
+                    <thead>
+                        {headerGroups.map((headerGroup) => (
+                                <tr {...headerGroup.getHeaderGroupProps()}>
+                                    {headerGroup.headers.map((column) => (
+                                            <th {...column.getHeaderProps(column.getSortByToggleProps())}>{column.render('Header')}
+                                                <span>
+                                                    {column.isSorted ? (column.isSortedDesc ? ' ↑' : ' ↓'): ''}    
+                                                </span>
+                                            </th>
+                                        ))}
+                                </tr>
+                            ))}
+                    </thead>
+                    <tbody className='table__body' {...getTableBodyProps()}>
+                    {rows.map(row => {
+                        prepareRow(row)
+                        return (
+                        <tr {...row.getRowProps()}>
+                            {row.cells.map(cell => {
+                            return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                            })}
+                        </tr>
+                        )
+                    })}
+                    </tbody>
+                </table>
+            </>
         </div>
     )
 }

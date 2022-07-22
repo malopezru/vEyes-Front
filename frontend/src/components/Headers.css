@@ -1,23 +1,66 @@
 .App-header {
-    min-height: 10vh;
-    display: flex;
-    flex-direction: row;
-    margin-left: 70vw;
-    font-size: calc(10px + 2vmin);
-    color: white;
-  }
-  
-  button {
-    border-color: white;
-    width: 80px;
-    height: 6vh;
-    margin: 10px;
-    background-color: gray;
-    border-radius: 10px;
-    font-size: 1.8vh;
-    font-weight: bold;
-  }
-  
-  button:hover {
-    background-color: #4ca7c1;
-  }
+  margin-left: 15px;
+  min-height: 10vh;
+  display: flex;
+  flex-direction: row;
+  color: white;
+}
+
+.header__left {
+  display: flex;
+}
+
+h2 {
+  color: #1D83C2;
+}
+
+img {
+  margin-top: 10px;
+  margin-right: 5px;
+  width: 49px;
+  height: 51px;
+}
+
+.users {
+  background-color: #1D83C2;
+  border-color: white;
+  width: 92px;
+  height: 74px;
+  margin-left: 5px;
+  font-size: 16px;
+  line-height: 24px;
+  color: #FFFFFF;
+  border-radius: 4px;
+}
+
+.projects {
+  background-color: white;
+  border-color: white;
+  width: 92px;
+  height: 74px;
+  margin-left: 5px;
+  font-size: 16px;
+  line-height: 24px;
+  color: #1D83C2;
+  border-radius: 4px;
+  border:none;
+}
+
+.new__user {
+  position: absolute;
+  right: 40px;
+  top: 15px;
+  border-color: white;
+  width: 118px;
+  height: 33px;
+  margin: 10px;
+  background-color: #1D83C2;
+  border-radius: 4px;
+  font-size: 14px;
+  color: white;
+}
+
+button:hover {
+  background-color: #006bae;
+  color: white;
+}

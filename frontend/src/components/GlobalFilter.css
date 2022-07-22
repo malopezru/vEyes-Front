@@ -1,0 +1,21 @@
+.search__bar {
+    position: absolute;
+    right: 200px;
+    top: 25px;
+}
+
+input {
+    height: 30px;
+    padding-left: 25px;
+    border-radius: 5px;
+    border-color: #D6D6D6;
+}
+
+.search__image {
+    width: 13px;
+    height: 13px;
+    position: relative;
+    right: -25px;
+    top: 1px;
+  }
+

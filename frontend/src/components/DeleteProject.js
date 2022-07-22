@@ -4,7 +4,6 @@ function DeleteProject() {
 
     const [projectsInfo, setProjectsInfo] = useState({ projects:[], response:[] });
     const [checkList, setCheckList] = useState([])
-    const array = []
 
     
     
@@ -23,8 +22,7 @@ function DeleteProject() {
         makeAPICall();
     }, [])
     
-    const handleSubmit = (event) => {
-        event.preventDefault()
+    const handleSubmit = () => {
         var checkboxes = document.getElementsByName('projects')
 
         var projects = 0
@@ -43,7 +41,7 @@ function DeleteProject() {
             },
            }
 
-        if (projects != 0){
+        if (projects !== 0){
             console.log(projects)
             fetch('http://localhost:3000/api/users/' + projects, deleteMethod)
             .then(res => res.json())

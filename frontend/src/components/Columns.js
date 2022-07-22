@@ -12,7 +12,7 @@ export const Columns = [
         accessor: "username"
     },
     {
-        Header: "Proyectos",
+        Header: "Projects",
         accessor: "projects"
     }
 ]

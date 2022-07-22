@@ -7,7 +7,6 @@ function NewUser() {
     const [userName, setUserName] = useState("");
     const [checkList, setCheckList] = useState([])
     const [projectsInfo, setProjectsInfo] = useState({ projects:[], response:[] });
-    var options = { };
 
     const makeAPICall = async () => {
         try {
@@ -23,20 +22,12 @@ function NewUser() {
         makeAPICall();
     }, [])
     
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const handleSubmit = () => {
         const first_name = `${name}`
         const last_name = `${lastName}`
         const username = `${userName}`
 
         var checkboxes = document.getElementsByName('projects')
-        var selectedArray = 0;
-
-        for (var i = 0; i < checkboxes.length; i++) {
-            if (checkboxes[i].checked) {
-                selectedArray += 1;
-            }
-        }
 
         const projects = []
 
@@ -48,26 +39,8 @@ function NewUser() {
 
         
         const data = {first_name, last_name, username, projects}
-        const datos = JSON.stringify(data)
-        console.log(datos)
-        
-        /* options = {
-            method: 'POST',
-            mode:'no-cors',
-            body: datos,
-            headers: {"Content-type": "application/json; charset=UTF-8"}
-        }
-        console.log(options) */
             
-        fetch('http://localhost:3000/api/users', {
-            method: 'POST',
-            mode:'no-cors',
-            body: datos,
-            headers: {"Content-type": "application/json; charset=UTF-8"}
-        })
-        .then(response => response.json())
-        .then(json => console.log(json))
-        .catch(err => console.log(err));
+        PostData(data);
         
         
         if(first_name && lastName && userName && projects){
@@ -95,6 +68,19 @@ function NewUser() {
           }
     }
 
+    function PostData(datos) {
+        fetch('http://localhost:3000/api/users', {
+            method: 'POST',
+            mode:'cors',
+            body: JSON.stringify(datos),
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Accept": "application/json, text/plain, */*", 
+                'Content-Type':'application/json'}
+        })
+        .then(response => response.json())
+        .catch(err => console.log(err));
+    }
     
     return (
         <div className='divisor'>
