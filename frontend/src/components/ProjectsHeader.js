@@ -1,5 +1,5 @@
 import React from 'react'
-import './Headers.css'
+import './ProjectsHeader.css'
 import IconS_vEye from '../icons/IconS_vEye1.png'
 import topic from '../icons/topic.png'
 import { Link } from 'react-router-dom'
@@ -15,16 +15,16 @@ function Header() {
 				<h2>v-Eye Asset Inventory</h2>
 				<Link to={`/`}>
 					<GroupOutlinedIcon className='GroupIcon' />
-					<button className='users'>Users</button>
+					<button className='projectsUsers'>Users</button>
 				</Link>
 				<Link to={`/projects`}>
 					<img src={topic} className='projects__icon' alt='imagen' />
-					<button className='projects'>Projects</button>
+					<button className='projectsHeader'>Projects</button>
 				</Link>
 			</div>
 			<div className='header__right'>
-				<Link to={`/new-user`}>
-					<button className='new__user'>Add User</button>
+				<Link to={`/new-project`}>
+					<button className='new__user'>Add Project</button>
 					<PersonAddAltOutlinedIcon
 						sx={{ color: blue[50] }}
 						className='PersonAddIcon'

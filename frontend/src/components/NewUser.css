@@ -1,11 +1,38 @@
-.divisor {
-    background-color: rgb(59, 59, 59);
+.newUser__div {
+    display: flex;
+    flex-direction: row;
+}
+
+.add__user {
     margin: 0 35vw 0px 35vw;
     text-align: center;
     border-radius: 10px;
-    color: white;
     display: flex;
     flex-direction: column;
+}
+
+.AddUser__header {
+    display: flex;
+    align-items: center;
+}
+
+.h2AddUser__header {
+    padding-left: 20px;
+}
+
+.CloseIcon {
+    padding-top: 8px;
+}
+
+form {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 25%;
+    height: 100vh;
+    bottom: 1px;
+    right: 0;
+    padding-left: 20px;
 }
 
 label {
@@ -18,10 +45,11 @@ hr {
 }
 
 .submit__button {
-    margin: 5vh 0px 2vh 0;
+    position: absolute;
+    bottom: 20px;
     height: 40px;
-    width: 100px;
-    background-color: grey;
+    width: 90%;
+    background-color: #1D83C2;
     border-radius: 10px;
     color: white;
     border-color: white;
@@ -32,7 +60,16 @@ hr {
 }
 
 input{
-    color:black
+    color:black;
+}
+
+p {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 21px;
+    color: #353535;
+    margin-bottom: 0;
+    margin-top: 25px;
 }
 
 select {
@@ -43,4 +80,41 @@ select {
 textarea {
     color:black;
     max-height: 50px;
+}
+
+.addUserTable {
+    width: 75%;
+    text-align: center;
+}
+
+.addUserInput {
+    width: 20vw;
+    border: none;
+    outline: 0;
+    border-bottom: #353535 solid 1px;
+    padding: 8px 0px 8px 5px;
+    font-size: 16px;
+}
+
+.addUserInput:focus {
+    outline: none !important;
+    border-color: #1D83C2;
+}
+
+.select__list {
+    margin-top: 10px;
+    height: 40px;
+    outline: none;
+    border: none;
+    border-bottom: #353535 solid 1px;
+}
+
+.placeholder__option {
+    color: #B9B9B9 !important;
+}
+
+.Stack {
+    position: absolute;
+    left: 35%;
+    bottom: 30px;
 }
