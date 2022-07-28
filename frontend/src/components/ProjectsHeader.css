@@ -1,4 +1,4 @@
-.App-header {
+.App-header-Projects {
   margin-left: 15px;
   min-height: 10vh;
   display: flex;
@@ -6,7 +6,7 @@
   color: white;
 }
 
-.header__left {
+.ProjectsHeader__left {
   display: flex;
 }
 

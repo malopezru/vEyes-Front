@@ -1,6 +1,5 @@
 import React, { useMemo, useState, useEffect, useRef } from 'react'
 import { useTable, useSortBy, useGlobalFilter } from 'react-table'
-import SelectorTest from './SelectorTest.js'
 import { Columns } from './Columns.js'
 import { Link } from 'react-router-dom'
 import GlobalFilter from './GlobalFilter.js'
@@ -11,6 +10,13 @@ import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 import { Collapse } from '@mui/material'
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemText from '@mui/material/ListItemText';
+import Checkbox from '@mui/material/Checkbox';
 
 function NewUser() {
 	const [name, setName] = useState('')
@@ -23,10 +29,20 @@ function NewUser() {
 	const usernameRef = useRef(null)
 	const [open, setOpen] = useState(false)
 	const [openError, setOpenError] = useState(false)
-	const [projectsInfo, setProjectsInfo] = useState({
-		projects: [],
-		response: [],
-	})
+	const [projectName, setProjectName] = useState([]);
+	const names = [];
+
+	const ITEM_HEIGHT = 48;
+	const ITEM_PADDING_TOP = 8;
+	const MenuProps = {
+		PaperProps: {
+			style: {
+			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+			width: 250,
+			},
+		},
+	};
+
 
 	const makeAPICall = async () => {
 		try {
@@ -41,58 +57,49 @@ function NewUser() {
 		}
 	}
 
+	for(var i = 0; i < checkList.length; i++){
+		names.push(checkList[i].project_name)
+	} 
+
 	useEffect(() => {
 		makeAPICall()
 	}, [])
 
 	const handleSubmit = (e) => {
-		const first_name = `${name}`
-		const last_name = `${lastName}`
-		const username = `${userName}`
+		let first_name = `${name}`
+		let last_name = `${lastName}`
+		let username = `${userName}`
 
-		var checkboxes = document.getElementsByName('projects')
-
-		const projects = []
-
-		for (var i = 0; i < checkboxes.length; i++) {
-			if (checkboxes[i].checked) {
-				projects.push(checkboxes[i].value)
-			}
-		}
+		const projects = projectName
 
 		const data = { first_name, last_name, username, projects }
 
-		if (first_name && lastName && userName && projects) {
+		if (name && lastName && userName && projects) {
 			PostData(data)
 			setOpen(true)
 			e.preventDefault()
+			makeAPICall()
 			nameRef.current.value = ''
 			lastNameRef.current.value = ''
 			usernameRef.current.value = ''
+			setName('')
+			setLastName('')
+			setUserName('')
 		} else {
 			setOpenError(true)
 			e.preventDefault()
 		}
 		makeAPICall()
 	}
-
-	const handleChange = (event) => {
-		const { value, checked } = event.target
-		const { projects } = projectsInfo
-		console.log(`${value} is ${checked}`)
-
-		if (checked) {
-			setProjectsInfo({
-				projects: [...projects, value],
-				response: [...projects, value],
-			})
-		} else {
-			setProjectsInfo({
-				projects: projects.filter((e) => e !== value),
-				response: projects.filter((e) => e !== value),
-			})
-		}
-	}
+	
+	const handleProjectChange = (event) => {
+		const {
+		  target: { value },
+		} = event;
+		setProjectName(
+		  typeof value === 'string' ? value.split(',') : value,
+		);
+	  };
 
 	function PostData(datos) {
 		fetch('http://localhost:3000/api/users', {
@@ -155,23 +162,25 @@ function NewUser() {
 							</tr>
 						))}
 					</thead>
-					<tbody className='table__body' {...getTableBodyProps()}>
-						{rows.map((row) => {
-							prepareRow(row)
-							return (
-								<tr {...row.getRowProps()}>
-									{row.cells.map((cell) => {
-										return (
-											<td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-										)
-									})}
-								</tr>
-							)
-						})}
-					</tbody>
+                    <tbody className='table__body' {...getTableBodyProps()}>
+                    {rows.map((row) => {
+                        prepareRow(row)
+                        return (
+                        <tr {...row.getRowProps()}>
+                            <td>{row.original.first_name}</td>
+                            <td>{row.original.last_name}</td>
+                            <td>{row.original.username}</td>
+                            {row.original.projects.length <= 3 && 
+                            <td>{row.original.projects.join(", ")} </td>}
+                            {row.original.projects.length > 3 &&
+                            <td>{row.original.projects[0]}, {row.original.projects[1]}, {row.original.projects[2]}... <b>+{row.original.projects.length-3}</b></td>}
+                        </tr>
+                        )
+                    })}
+                    </tbody>
 				</table>
 			</>
-			<form>
+			<form className='addUser__form'>
 				<div className='AddUser__header'>
 					<Link to={`/`}>
 						<CloseIcon className='CloseIcon' />
@@ -213,23 +222,6 @@ function NewUser() {
 
 				<label>
 					<p>Assign projects</p>
-					{/* <select
-						id='selectList'
-						className='select__list'
-						placeholder='Select Projects'>
-						{checkList.map((item, index) => (
-							<option key={index}>
-								<input
-									value={checkList[index].project_name}
-									name='projects'
-									id={checkList[index].id}
-									type='checkbox'
-									onChange={handleChange}
-								/>
-								<span>{checkList[index].project_name}</span>
-							</option>
-						))}
-					</select> */}
 					<hr />
 				</label>
 				<div>
@@ -237,9 +229,32 @@ function NewUser() {
 						type='submit'
 						value='Save'
 						className='submit__button'
-						onClick={handleSubmit}
+						onClick={(e) => { handleSubmit(e) } }
 					/>
-					{/* <SelectorTest /> */}
+
+					<div>
+					  <FormControl sx={{ m: 1, width: 300 }}>
+						<InputLabel id="multiple-checkbox">Tag</InputLabel>
+						<Select
+						  labelId="multiple-checkbox"
+						  id="project-selected"
+						  multiple
+						  value={projectName}
+						  onChange={handleProjectChange}
+						  input={<OutlinedInput label="Tag" />}
+						  renderValue={(selected) => selected.join(', ')}
+						  MenuProps={MenuProps}
+						>
+						  {names.map((project) => (
+							<MenuItem key={project} value={project}>
+							  <Checkbox checked={projectName.indexOf(project) > -1} />
+							  <ListItemText primary={project} />
+							</MenuItem>
+						  ))}
+						</Select>
+					  </FormControl>
+					</div>
+
 				</div>
 			</form>
 			<div className='Stack'>
