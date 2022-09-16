@@ -9,11 +9,11 @@ function Table() {
 
 	const makeAPICall = async () => {
 		try {
-			const response = await fetch('http://localhost:3000/api/users', {
+			const response = await fetch('http://localhost/3dves/customerData/projects', {
 				mode: 'cors',
 			})
 			const datos = await response.json()
-			setUserData(datos.projects)
+			setUserData(datos)
 		} catch (e) {
 			console.log(e)
 		}

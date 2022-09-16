@@ -1,15 +1,15 @@
 export const Columns = [
 	{
 		Header: 'Name',
-		accessor: 'first_name',
+		accessor: 'name',
 	},
 	{
 		Header: 'Last Name',
-		accessor: 'last_name',
+		accessor: 'lastName',
 	},
 	{
 		Header: 'Username',
-		accessor: 'username',
+		accessor: 'user',
 	},
 	{
 		Header: 'Projects',

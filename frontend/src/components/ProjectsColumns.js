@@ -1,14 +1,14 @@
 export const ProjectsColumns = [
 	{
 		Header: 'Name',
-		accessor: 'project_name',
+		accessor: 'name',
 	},
 	{
-		Header: 'Location',
-		accessor: 'location',
+		Header: 'Description',
+		accessor: 'description',
 	},
 	{
-		Header: 'Added Date',
-		accessor: 'added_date',
+		Header: 'Longitude',
+		accessor: 'longitude',
 	},
 ]

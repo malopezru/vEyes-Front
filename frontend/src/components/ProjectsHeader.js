@@ -14,21 +14,27 @@ function Header() {
 				<img src={IconS_vEye} alt='imagen' />
 				<h2>v-Eye Asset Inventory</h2>
 				<Link to={`/`}>
-					<GroupOutlinedIcon className='GroupIcon' />
-					<button className='projectsUsers'>Users</button>
+					<button className='projectsUsers'>
+						<GroupOutlinedIcon className='projectsGroupIcon' />
+						Users
+					</button>
 				</Link>
 				<Link to={`/projects`}>
-					<img src={topic} className='projects__icon' alt='imagen' />
-					<button className='projectsHeader'>Projects</button>
+					<button className='projectsHeader'>
+						<img src={topic} className='projects__icon' alt='imagen' />
+						Projects
+					</button>
 				</Link>
 			</div>
 			<div className='ProjectsHeader__right'>
 				<Link to={`/new-project`}>
-					<button className='new__user'>Add Project</button>
-					<PersonAddAltOutlinedIcon
-						sx={{ color: blue[50] }}
-						className='PersonAddIcon'
-					/>
+					<button className='new__user'>
+						<PersonAddAltOutlinedIcon
+							sx={{ color: blue[50] }}
+							className='PersonAddIcon'
+						/>
+						Add Project
+					</button>
 				</Link>
 			</div>
 			{/* <Link to={`/new-project`}>

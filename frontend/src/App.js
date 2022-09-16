@@ -50,8 +50,6 @@ function App() {
 							</>
 						}
 					/>
-
-					<Route path='/projects' element={<>{/* <SelectorTest /> */}</>} />
 				</Routes>
 			</Router>
 		</div>

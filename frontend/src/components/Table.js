@@ -3,7 +3,6 @@ import { useTable, useSortBy, useGlobalFilter, useRowSelect } from 'react-table'
 import { TableCheckbox } from './TableCheckbox.js'
 import { Columns } from './Columns.js'
 import { Link } from 'react-router-dom'
-import { blue } from '@mui/material/colors'
 import { Collapse } from '@mui/material'
 import './Headers.css'
 import './Table.css'
@@ -37,7 +36,7 @@ function Table() {
 	const [name, setName] = useState('')
 	const [lastName, setLastName] = useState('')
 	const [userName, setUserName] = useState('')
-    const [userProjects, setUserProjects] = useState('')
+    const [userProjects, setUserProjects] = useState([])
     const [id, setId] = useState('')
 	const [open, setOpen] = useState(false)
 	const [openError, setOpenError] = useState(false)
@@ -48,22 +47,26 @@ function Table() {
 
     const makeAPICall = async () => {
         try {
-            const response = await fetch('http://localhost:3000/api/users', {mode:'cors'});
-            const datos = await response.json();
-			setCheckList(datos.projects)
-            setUserData(datos.users)
+            const response = await fetch('https://energydashboard.3dves.com:3090/3dves/user', {mode:'cors',
+            headers: {
+                'Authorization': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJNYXJpY29wYSIsImlhdCI6MTY2MjE1MDMwMSwiZXhwIjoxNjYzMzU5OTAxfQ.ah-5_yDThcjM-l648vkDmyPS7O9mQoBN3UOaEc2xzUM"
+			}});
+            const data = await response.json();
+            let checkListArray = data.map(user => {return user.projects})
+            setCheckList(checkListArray)
+            setUserData(data)
         }catch (e) {
             console.log(e)
         }
     }
-
+    
     useEffect(() => {
         makeAPICall();
     }, [])
 
     
 	for(var i = 0; i < checkList.length; i++){
-		names.push(checkList[i].project_name)
+		names.push(checkList[i])
 	} 
 
     const columns = useMemo(() => Columns, [])
@@ -110,14 +113,13 @@ function Table() {
         const deleteMethod = {
             method: 'DELETE',
             headers: {
-             'Access-Control-Allow-Origin': 'http://localhost:3001',
              'Access-Control-Allow-Credentials': 'true' 
             },
         }
 
         if (selectedIds.length !== 0){
             for(var i = 0; i < selectedIds.length; i++){
-                fetch('http://localhost:3000/api/users/' + selectedIds[i], deleteMethod)
+                fetch('https://energydashboard.3dves.com:3090/3dves/user/' + selectedIds[i], deleteMethod)
                 .then(res => res.json())
                 .then(res => console.log(res))
             }
@@ -127,16 +129,23 @@ function Table() {
         }
     }
 
-    const handleEditClick = (e, row) => {
+    const handleEditClick = async (e, row) => {
         e.preventDefault()
         setEditUser(true)
-        nameRef.current = row.original.first_name
-        lastNameRef.current = row.original.last_name
-        usernameRef.current = row.original.username
+        nameRef.current = row.original.name
+        lastNameRef.current = row.original.lastName
+        usernameRef.current = row.original.user
+
+        const response = await fetch('https://energydashboard.3dves.com:3090/3dves/user', {mode:'cors',
+            headers: {
+                'Authorization': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJNYXJpY29wYSIsImlhdCI6MTY2MjE1MDMwMSwiZXhwIjoxNjYzMzU5OTAxfQ.ah-5_yDThcjM-l648vkDmyPS7O9mQoBN3UOaEc2xzUM"
+			}});
+            await response.json();
+
         setId(row.original.id)
-        setName(row.original.first_name)
-        setLastName(row.original.last_name)
-        setUserName(row.original.username)
+        setName(row.original.name)
+        setLastName(row.original.lastName)
+        setUserName(row.original.user)
         setUserProjects(row.original.projects)
         console.log(userProjects)
     }
@@ -154,14 +163,16 @@ function Table() {
     }
 
     function PutData(id, datos) {
-        fetch('http://localhost:3000/api/users/' + id, {
+        fetch('https://energydashboard.3dves.com:3090/3dves/user' + id, {
             method: 'PUT',
             mode:'cors',
             body: JSON.stringify(datos),
             headers: {
                 "Access-Control-Allow-Origin": "*",
                 "Accept": "application/json, text/plain, */*", 
-                'Content-Type':'application/json'}
+                'Content-Type':'application/json',
+                'Authorization': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJNYXJpY29wYSIsImlhdCI6MTY2MjE1MDMwMSwiZXhwIjoxNjYzMzU5OTAxfQ.ah-5_yDThcjM-l648vkDmyPS7O9mQoBN3UOaEc2xzUM"
+            }
         })
         .then(response => response.json())
         .then(response => console.log(response))
@@ -203,31 +214,35 @@ function Table() {
     return (
         <div  className='view'>
             
-            <div>
-		<header className='App-header'>
-			<div className='header__left'>
-				<img src={IconS_vEye} alt='imagen' />
-				<h2>v-Eye Asset Inventory</h2>
-				<Link to={`/`}>
-					<button className='users'>
-					<GroupOutlinedIcon className='GroupIcon' />
-                    Users</button>
-				</Link>
-				<Link to={`/projects`}>
-					<button className='projects'>
-					<img src={topic} className='projects__icon' alt='imagen' />
-                    Projects</button>
-				</Link>
-			</div>
-			<div className='header__right'>
-					<button className='delete__user' onClick={() => setShowDelete(true)}>
-					<DeleteOutlinedIcon	className='DeleteIcon' />Delete</button>
-				<Link to={`/new-user`}>
-					<button className='new__user'>
-					<PersonAddAltOutlinedIcon className='PersonAddIcon'	/>Add User</button>
-				</Link>
-			</div>
-		</header>
+        <div className='header__div'>
+            <header className='App-header'>
+                <div className='header__left'>
+                    <div className='logo'>
+                        <img src={IconS_vEye} alt='imagen' />
+                    </div>
+                    <div className='logotext'>
+                        <h2>v-Eye Asset Inventory</h2>
+                    </div>
+                    <Link to={`/`}>
+                        <button className='users'>
+                        <GroupOutlinedIcon className='GroupIcon' />
+                        Users</button>
+                    </Link>
+                    <Link to={`/projects`}>
+                        <button className='projects'>
+                        <img src={topic} className='ProjectsIcon' alt='imagen' />
+                        Projects</button>
+                    </Link>
+                </div>
+                <div className='header__right'>
+                        <button className='delete__user' onClick={() => setShowDelete(true)}>
+                        <DeleteOutlinedIcon	className='DeleteIcon' />Delete</button>
+                    <Link to={`/new-user`}>
+                        <button className='new__user'>
+                        <PersonAddAltOutlinedIcon className='PersonAddIcon'	/>Add User</button>
+                    </Link>
+                </div>
+            </header>
 		</div>
 
             <>
@@ -261,9 +276,9 @@ function Table() {
                         return (
                         <tr {...row.getRowProps()}>
                             <td><Checkbox {...row.getToggleRowSelectedProps()}/></td>
-                            <td><EditOutlinedIcon style={editButton} className='EditIcon' onClick={(e) => handleEditClick(e, row)}/>{row.original.first_name}</td>
-                            <td>{row.original.last_name}</td>
-                            <td>{row.original.username}</td>
+                            <td><EditOutlinedIcon style={editButton} className='EditIcon' onClick={(e) => handleEditClick(e, row)}/>{row.original.name}</td>
+                            <td>{row.original.lastName}</td>
+                            <td>{row.original.user}</td>
                             {row.original.projects.length <= 3 && 
                             <td>{row.original.projects.join(", ")} </td>}
                             {row.original.projects.length > 3 &&
@@ -313,9 +328,14 @@ function Table() {
                     onChange={(e) => handleUsernameChange(e)}
                 />
             </label>
+
+            <label>
+                <p>Assigned Projects</p>
+                <p>{userProjects.join(', ')}</p>
+            </label>
         
             <label>
-                <p>Assign projects</p>
+                <p>Select projects</p>
                 <div>
 					  <FormControl sx={{ m: 1, width: 300}}>
 						<InputLabel id="multiple-checkbox">{userProjects.join(', ')}</InputLabel>

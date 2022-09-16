@@ -46,19 +46,24 @@ function NewUser() {
 
 	const makeAPICall = async () => {
 		try {
-			const response = await fetch('http://localhost:3000/api/users', {
+			const response = await fetch('https://energydashboard.3dves.com:3090/3dves/user', {
 				mode: 'cors',
+				headers: {
+					'Authorization': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJNYXJpY29wYSIsImlhdCI6MTY2MjE1MDMwMSwiZXhwIjoxNjYzMzU5OTAxfQ.ah-5_yDThcjM-l648vkDmyPS7O9mQoBN3UOaEc2xzUM",
+				}
 			})
-			const datos = await response.json()
-			setCheckList(datos.projects)
-			setUserData(datos.users)
+			const data = await response.json()
+
+            let checkListArray = data.map(user => {return user.projects})
+            setCheckList(checkListArray)
+			setUserData(data)
 		} catch (e) {
 			console.log(e)
 		}
 	}
 
 	for(var i = 0; i < checkList.length; i++){
-		names.push(checkList[i].project_name)
+		names.push(checkList[i])
 	} 
 
 	useEffect(() => {
@@ -102,7 +107,7 @@ function NewUser() {
 	  };
 
 	function PostData(datos) {
-		fetch('http://localhost:3000/api/users', {
+		fetch('https://energydashboard.3dves.com:3090/3dves/user', {
 			method: 'POST',
 			mode: 'cors',
 			body: JSON.stringify(datos),
@@ -110,6 +115,7 @@ function NewUser() {
 				'Access-Control-Allow-Origin': '*',
 				Accept: 'application/json, text/plain, */*',
 				'Content-Type': 'application/json',
+				'Authorization': "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQsIm5hbWUiOiJNYXJpY29wYSIsImlhdCI6MTY2MjE1MDMwMSwiZXhwIjoxNjYzMzU5OTAxfQ.ah-5_yDThcjM-l648vkDmyPS7O9mQoBN3UOaEc2xzUM",
 			},
 		})
 			.then((response) => response.json())
@@ -167,9 +173,9 @@ function NewUser() {
                         prepareRow(row)
                         return (
                         <tr {...row.getRowProps()}>
-                            <td>{row.original.first_name}</td>
-                            <td>{row.original.last_name}</td>
-                            <td>{row.original.username}</td>
+                            <td>{row.original.name}</td>
+                            <td>{row.original.lastName}</td>
+                            <td>{row.original.user}</td>
                             {row.original.projects.length <= 3 && 
                             <td>{row.original.projects.join(", ")} </td>}
                             {row.original.projects.length > 3 &&

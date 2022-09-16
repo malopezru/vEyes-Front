@@ -5,8 +5,6 @@ import IconS_vEye from '../icons/IconS_vEye1.png'
 import topic from '../icons/topic.png'
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined'
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined'
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import { blue } from '@mui/material/colors'
 
 function Header() {
     const [showDelete, setShowDelete] = useState(false)
@@ -25,7 +23,6 @@ function Header() {
         const deleteMethod = {
             method: 'DELETE',
             headers: {
-             'Access-Control-Allow-Origin': 'http://localhost:3001',
              'Access-Control-Allow-Credentials': 'true' 
             },
            }
